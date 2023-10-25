@@ -1,0 +1,36 @@
+version: '3.1'
+services:
+  mongodb:
+    container_name: aeswolf_mongodb
+    image: mongo
+    restart: on-failure:5
+    ports:
+      - 27007:27017
+    environment:
+      MONGO_INITDB_DATABASE: aeswolf_api
+    volumes:
+      - aeswolfVolume:/data/db
+  api:
+    depends_on:
+      - mongodb
+    restart: on-failure:5
+    container_name: aeswolf_api
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/aeswolf_api
+      NODE_ENV: development
+      LOG_LEVEL: info
+      CONSOLE_LOG_LEVEL: debug
+    ports:
+      - 3000:3000
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  aeswolfVolume:
+    name: aeswolf_MongoDB

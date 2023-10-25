@@ -1,0 +1,7 @@
+add validation to entities
+
+move level image creator to this API
+
+convert deletes to soft deletes
+
+fix Rocko font not loading in CanvasConstuctor
